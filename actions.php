@@ -48,5 +48,10 @@ if(isset($_POST['editItem'])) {
       }
     }
 }
+//deleteItem
+if(isset($_POST['deleteItem'])) {
+    $item_id = $_POST["itemid"];
+    $res = $mysqli->query("DELETE FROM products WHERE `item_id`=".$item_id);
+}
 
 ?>
