@@ -62,6 +62,8 @@ include 'header.php';
               while($obj = $result->fetch_object()) {
                   $id =  $obj->{'item_id'};
                   $pname = $obj->{'product_name'};
+                  $quantity = $obj->{'quantity'};
+                  $price = $obj->{'price'};
                   echo "<tbody>";
                   echo "<tr>";
                   echo '<td>' . $obj->{'item_id'} . '</td>';
@@ -82,8 +84,17 @@ include 'header.php';
          ?>
     </div>
     <script>
-        
-
+    function getId(id, pname) {
+        var pname = <?php echo $pname ?>;
+        var price = <?php echo $price ?>;
+        var quantity = <?php echo $quantity ?>;
+        document.getElementById('item_id_edit').value = id;
+        document.getElementById('item_id_delete').value = id;
+        document.getElementById('pname_edit').value = pname;
+        document.getElementById('quantity_edit').value = quantity;
+        document.getElementById('price_edit').value = price;
+    }
     </script>
+
 </body>
 </html>

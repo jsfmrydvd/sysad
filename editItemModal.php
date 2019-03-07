@@ -15,19 +15,19 @@
           <form method="post" action="actions.php">
               <div class="form-group">
                 <label for="itemid">Item id</label>
-                <input type="number" class="form-control" id="item_id" name="itemid" value="" readonly >
+                <input type="number" class="form-control" id="item_id_edit" name="itemid" value="" readonly >
               </div>
               <div class="form-group">
                 <label for="pname">Product name<?php $pname?></label>
-                <input type="text" class="form-control" id="pname" name="pname" required>
+                <input type="text" class="form-control" id="pname_edit" name="pname" required>
               </div>
               <div class="form-group">
                 <label for="quantity">Quantity</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" required>
+                <input type="number" class="form-control" id="quantity_edit" name="quantity" required>
               </div>
               <div class="form-group">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" name="price"  step="0.01" required>
+                <input type="number" class="form-control" id="price_edit" name="price"  step="0.01" required>
               </div>
               <!-- Modal footer -->
               <div class="modal-footer">
@@ -39,8 +39,3 @@
     </div>
   </div>
 </div>
-<script>
-function getId(id, pname) {
-    document.getElementById('item_id').value = id;
-}
-</script>
