@@ -1,15 +1,45 @@
 <?php
 
 include 'config.php';
-$var="id";
+session_start();
+
 $result = $mysqli->query('SELECT * FROM products ORDER BY `id`');
+// define how many results you want per page
+$results_per_page = 5;
+$number_of_results = mysqli_num_rows($result);
+$number_of_pages = ceil($number_of_results/$results_per_page);
+if (!isset($_GET['page'])) {
+  $page = 1;
+} else {
+  $page = $_GET['page'];
+}
+
+$this_page_first_result = ($page-1)*$results_per_page;
+
+
+//get sql database
+$sql=$mysqli->query("SELECT * from products ORDER BY `id` LIMIT $this_page_first_result , $results_per_page");
 
 if(isset($_POST['button'])){
   $search=$_POST['search'];
-  $result=$mysqli->query("SELECT * from products where (`id` LIKE '%".$search."%') OR (`product_name` LIKE '%".$search."%')");
+  $result = $mysqli->query("SELECT * from products where (`item_id` LIKE '%".$search."%') OR (`product_name` LIKE '%".$search."%')");
+  // define how many results you want per page
+  $results_per_page = 5;
+  $number_of_results = mysqli_num_rows($result);
+  $number_of_pages = ceil($number_of_results/$results_per_page);
+  if (!isset($_GET['page'])) {
+    $page = 1;
+  } else {
+    $page = $_GET['page'];
+  }
+
+  $this_page_first_result = ($page-1)*$results_per_page;
+
+
+  $sql=$mysqli->query("SELECT * from products where (`item_id` LIKE '%".$search."%') OR (`product_name` LIKE '%".$search."%') LIMIT  $this_page_first_result, $results_per_page");
 }
 
-if($result === FALSE){
+if($sql === FALSE){
   die(mysql_error());
 }
 
@@ -29,14 +59,14 @@ include 'header.php';
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="#">Sales</a>
-                    <a class="nav-item nav-link" href="totalSales.php">Calendar</a>
+                    <a class="nav-item nav-link" href="totalSalesPerMonth.php">Sales per month</a>
+                    <a class="nav-item nav-link" href="totalSales.php">Sales</a>
                 </div>
             </div>
         </nav>
     </header>
     <form action="index.php" method="post">
-      <div class="col-md-4 text-center" style="display:flex; margin: auto;">
+      <div class="col-md-4 text-center" style="display:flex; margin: auto; padding-top: 30px;">
         <input class="form-control" name="search" type="search" placeholder="Search..."autofocus>
         <input class="btn btn-primary" type="submit" name="button">
       </div>
@@ -57,11 +87,13 @@ include 'header.php';
             include 'addItemModal.php';
             include 'editItemModal.php';
             include 'deleteItemModal.php';
+            include 'registerSaleModal.php';
 
-            if($result){
-              while($obj = $result->fetch_object()) {
+
+            if($sql){
+              while($obj = $sql->fetch_object()) {
                   $id =  $obj->{'item_id'};
-                  $pname = $obj->{'product_name'};
+                  // $pname = $obj->{'product_name'};
                   $quantity = $obj->{'quantity'};
                   $price = $obj->{'price'};
                   echo "<tbody>";
@@ -69,28 +101,54 @@ include 'header.php';
                   echo '<td>' . $obj->{'item_id'} . '</td>';
                   echo '<td>' . $obj->{'product_name'} . '</td>';
                   echo '<td>' . $obj->{'quantity'} . '</td>';
-                  echo '<td>$' . $obj->{'price'} . '</td>';
+                  echo '<td>₱' . $obj->{'price'} . '</td>';
                   echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#editItemModal" onClick="getId('.$obj->{'item_id'}.')">Edit</button>'. '</td>';
-                  echo '<td colspan="1">' .'<button class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#deleteItemModal">Delete</button></button>'. '</td>';
+                  echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#deleteItemModal"  onClick="getId('.$obj->{'item_id'}.')">Delete</button>'. '</td>';
                   echo "</tr>";
                   echo "</tbody>";
+                  // display the links to the pages
+              }
+              for ($page=1;$page<=$number_of_pages;$page++) {
+                echo '<a href="index.php?page=' . $page . '">' . $page . '</a> ';
               }
             }
             ?>
         </table>
         <?php
-        echo '<button class="btn btn-success add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#addItemModal">Add item</button>';
+                if (!empty($_SESSION['success'])){
+        ?>
+                    <div class="alert" style="background: green;color: white;height: 50px;width: 50vh;display: block;margin: auto;">
+                            <?php    echo $_SESSION['success']; ?>
+                    </div>
+         <?php
+                unset($_SESSION['success']);
+                }
+                ?>
+        <?php
+                if (!empty($_SESSION['error'])){
+        ?>
+                    <div class="alert" style="background: red;color: white;height: 50px;width: 50vh;display: block;margin: auto;">
+                            <?php    echo $_SESSION['error']; ?>
+                    </div>
+         <?php
+                unset($_SESSION['error']);
+                }
+                ?>
+        <?php
+        echo '<div style="display: block; margin: auto; text-align: center;">';
+        echo '<button class="btn btn-success add-record" style="margin: 10px;" data-toggle="modal" data-target="#addItemModal">Add item</button>';
+        echo '<button class="btn btn-success add-record" style="margin: 10px;" data-toggle="modal" data-target="#registerSale">Register Sale</button>';
+        echo '</div>';
         include 'scripts.php'
          ?>
     </div>
     <script>
-    function getId(id, pname) {
-        var pname = <?php echo $pname ?>;
-        var price = <?php echo $price ?>;
-        var quantity = <?php echo $quantity ?>;
+    function getId(id) {
+        console.log(id);
+
         document.getElementById('item_id_edit').value = id;
         document.getElementById('item_id_delete').value = id;
-        document.getElementById('pname_edit').value = pname;
+        // document.getElementById('pname_edit').value = pname;
         document.getElementById('quantity_edit').value = quantity;
         document.getElementById('price_edit').value = price;
     }

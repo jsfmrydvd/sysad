@@ -1,10 +1,8 @@
 <?php
 
 include 'config.php';
-session_start();
-$var="id";
-$result = $mysqli->query('SELECT * FROM sales ORDER BY `idsales`');
 
+$result = $mysqli->query("SELECT MONTHNAME(dbdate), year(dbdate), SUM(total_amount) FROM sysad.sales GROUP BY YEAR(dbdate), MONTH(dbdate)");
 // define how many results you want per page
 $results_per_page = 10;
 $number_of_results = mysqli_num_rows($result);
@@ -19,8 +17,7 @@ $this_page_first_result = ($page-1)*$results_per_page;
 
 
 //get sql database
-$sql=$mysqli->query("SELECT * from sales ORDER BY `idsales` LIMIT $this_page_first_result , $results_per_page");
-
+$sql=$mysqli->query("SELECT MONTHNAME(dbdate), year(dbdate), SUM(total_amount) FROM sysad.sales GROUP BY YEAR(dbdate), MONTH(dbdate) LIMIT $this_page_first_result , $results_per_page");
 if($sql === FALSE){
   die(mysql_error());
 }
@@ -57,10 +54,8 @@ include 'header.php';
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" class=" th">Date</th>
-                    <th scope="col" class=" th">Item Id</th>
-                    <th scope="col" class=" th">Product Name</th>
-                    <th scope="col" class=" th">Quantity Sold</th>
+                    <th scope="col" class=" th">Month</th>
+                    <th scope="col" class=" th">Year</th>
                     <th scope="col" class=" th">Total Amount</th>
                     <!-- <th scope="col" class=" th" colspan="2">Actions</th> -->
 
@@ -77,11 +72,10 @@ include 'header.php';
 
                   echo "<tbody>";
                   echo "<tr>";
-                  echo '<td>' . $obj->{'dbdate'} . '</td>';
-                  echo '<td>' . $obj->{'item_id'} . '</td>';
-                  echo '<td>' . $obj->{'product_name'} . '</td>';
-                  echo '<td>' . $obj->{'quantity_sold'} . '</td>';
-                  echo '<td>₱' . $obj->{'total_amount'} . '</td>';
+                  echo '<td>' . $obj->{'MONTHNAME(dbdate)'} . '</td>';
+                  echo '<td>' . $obj->{'year(dbdate)'} . '</td>';
+                  echo '<td>₱' . $obj->{'SUM(total_amount)'} . '</td>';
+
                   // echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#editItemModal" onClick="getId('.$obj->{'item_id'}.')">Edit</button>'. '</td>';
                   // echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#deleteItemModal"  onClick="getId('.$obj->{'item_id'}.')">Delete</button>'. '</td>';
                   echo "</tr>";
@@ -92,12 +86,8 @@ include 'header.php';
         </table>
         <?php
         for ($page=1;$page<=$number_of_pages;$page++) {
-          echo '<a href="totalSales.php?page=' . $page . '">' . $page . '</a> ';
+          echo '<a href="totalSalesPerMonth.php?page=' . $page . '">' . $page . '</a> ';
         }
-        // echo '<div style="display: block; margin: auto; text-align: center;">';
-        // echo '<button class="btn btn-success add-record" style="margin: 10px;" data-toggle="modal" data-target="#addItemModal">Add item</button>';
-        // echo '<button class="btn btn-success add-record" style="margin: 10px;" data-toggle="modal" data-target="#registerSale">Register Sale</button>';
-        // echo '</div>';
         include 'scripts.php'
          ?>
     </div>
