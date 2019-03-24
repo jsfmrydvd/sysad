@@ -1,4 +1,3 @@
-
 <!-- The Modal -->
 <div class="modal" id="addItemModal">
   <div class="modal-dialog">
@@ -31,7 +30,7 @@
               </div>
               <!-- Modal footer -->
               <div class="modal-footer">
-                <button type="submit" class="btn btn-danger" name="addItem">Add</button>
+                <button type="submit" class="btn btn-success" name="addItem">Add</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
               </div>
           </form>

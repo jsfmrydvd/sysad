@@ -1,4 +1,3 @@
-
 <!-- The Modal -->
 <div class="modal" id="registerSale">
   <div class="modal-dialog">
@@ -25,7 +24,7 @@
 
               <!-- Modal footer -->
               <div class="modal-footer">
-                <button type="submit" class="btn btn-danger" name="registerSale">Register Sale</button>
+                <button type="submit" class="btn btn-success" name="registerSale">Register Sale</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
               </div>
           </form>

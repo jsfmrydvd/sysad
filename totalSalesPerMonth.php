@@ -29,80 +29,76 @@ if($sql === FALSE){
 include 'header.php';
  ?>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">SYSAD</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="index.php">Home <span class="sr-only">(current)</span></a>
-                    <!-- <a class="nav-item nav-link" href="#">Sales</a> -->
-                    <a class="nav-item nav-link" href="totalSales.php">Sales</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <!-- <form action="index.php" method="post">
-      <div class="col-md-4 text-center" style="display:flex; margin: auto; padding-top: 30px;">
-        <input class="form-control" name="search" type="search" placeholder="Search..."autofocus>
-        <input class="btn btn-primary" type="submit" name="button">
-      </div>
-    </form> -->
-    <div class="table-content">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col" class=" th">Month</th>
-                    <th scope="col" class=" th">Year</th>
-                    <th scope="col" class=" th">Total Amount</th>
-                    <!-- <th scope="col" class=" th" colspan="2">Actions</th> -->
+    <div class="page-wrapper chiller-theme toggled">
+      <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+      </a>
+     <?php
+     include('active_month.php');
+      ?>
+      <!-- sidebar-wrapper  -->
+      <main class="page-content">
+        <div class="container-fluid" style="background: #eee; min-height: 100vh;">
 
-                </tr>
-            </thead>
-            <?php
-            include 'addItemModal.php';
-            include 'editItemModal.php';
-            include 'deleteItemModal.php';
-            include 'registerSaleModal.php';
+          <h5 class="title-heading">Sales per month</h5>
+          <div class="table-content">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col" class=" th">Month</th>
+                          <th scope="col" class=" th">Year</th>
+                          <th scope="col" class=" th">Total Amount</th>
+                      </tr>
+                  </thead>
+                  <?php
+                  include 'addItemModal.php';
+                  include 'editItemModal.php';
+                  include 'deleteItemModal.php';
+                  include 'registerSaleModal.php';
 
-            if($sql){
-              while($obj = $sql->fetch_object()) {
+                  if($sql){
+                    while($obj = $sql->fetch_object()) {
+                        echo "<tbody>";
+                        echo "<tr>";
+                        echo '<td>' . $obj->{'MONTHNAME(dbdate)'} . '</td>';
+                        echo '<td>' . $obj->{'year(dbdate)'} . '</td>';
+                        echo '<td>₱' . $obj->{'SUM(total_amount)'} . '</td>';
+                        echo "</tr>";
+                        echo "</tbody>";
+                    }
 
-                  echo "<tbody>";
-                  echo "<tr>";
-                  echo '<td>' . $obj->{'MONTHNAME(dbdate)'} . '</td>';
-                  echo '<td>' . $obj->{'year(dbdate)'} . '</td>';
-                  echo '<td>₱' . $obj->{'SUM(total_amount)'} . '</td>';
+                  echo "<div class='pagination'>";
+                  if($page == 1) {
+                      echo ' <a class="prev" href="totalSalesPerMonth.php?page=' . ($page). '"">Prev</a>';
+                  } else {
+                      echo ' <a class="prev" href="totalSalesPerMonth.php?page=' . ($page-1). '"">Prev</a>';
 
-                  // echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#editItemModal" onClick="getId('.$obj->{'item_id'}.')">Edit</button>'. '</td>';
-                  // echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#deleteItemModal"  onClick="getId('.$obj->{'item_id'}.')">Delete</button>'. '</td>';
-                  echo "</tr>";
-                  echo "</tbody>";
-              }
-            }
-            ?>
-        </table>
-        <?php
-        for ($page=1;$page<=$number_of_pages;$page++) {
-          echo '<a href="totalSalesPerMonth.php?page=' . $page . '">' . $page . '</a> ';
-        }
-        include 'scripts.php'
-         ?>
+                  }
+                  for ($i=1;$i<=$number_of_pages;$i++) {
+                      $act = "active";
+                      if($i == $page) {
+                          echo '<a class="'.$act.'" totalSalesPerMonth="index.php?page=' . $i . '">' . $i . '</a> ';
+                      } else {
+                          echo '<a class="" href="totalSalesPerMonth.php?page=' . $i . '">' . $i . '</a> ';
+                      }
+                } if($number_of_pages == $page) {
+                    echo '<a class="next" href="totalSalesPerMonth.php?page=' . ($page). '"">Next</a>';
+                } else {
+                    echo '<a class="next" href="totalSalesPerMonth.php?page=' . ($page+1). '"">Next</a>';
+                }
+                  echo "</div>";
+                }
+                  ?>
+
+              </table>
+              <?php
+              include 'scripts.php'
+               ?>
+          </div>
+
+        </div>
+      </main>
     </div>
-    <script>
-    function getId(id) {
-        console.log(id);
-        var price = <?php echo $price ?>;
-        var quantity = <?php echo $quantity ?>;
-        document.getElementById('item_id_edit').value = id;
-        document.getElementById('item_id_delete').value = id;
-        // document.getElementById('pname_edit').value = pname;
-        document.getElementById('quantity_edit').value = quantity;
-        document.getElementById('price_edit').value = price;
-    }
-    </script>
 
 </body>
 </html>

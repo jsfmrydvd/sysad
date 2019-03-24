@@ -1,4 +1,3 @@
-
 <!-- The Modal -->
 <div class="modal" id="editItemModal">
   <div class="modal-dialog">
@@ -6,7 +5,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
+        <h4 class="modal-title">Edit details</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
@@ -31,7 +30,7 @@
               </div>
               <!-- Modal footer -->
               <div class="modal-footer">
-                <button type="submit" class="btn btn-danger" name="editItem">Save</button>
+                <button type="submit" class="btn btn-success" name="editItem">Save</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
               </div>
           </form>
