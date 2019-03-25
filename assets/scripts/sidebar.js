@@ -29,7 +29,15 @@ $("#show-sidebar").click(function() {
   $(".page-wrapper").addClass("toggled");
 });
 
-
+jQuery(window).resize(function () {
+ var screen = $(window)
+  if (screen.width < 575.98) {
+      $(".page-wrapper").addClass("toggled");
+ }
+    else {
+        $(".page-wrapper").removeClass("toggled");
+     }
+ });
 
 
 });

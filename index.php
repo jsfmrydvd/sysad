@@ -1,4 +1,3 @@
-
 <?php
 
 include 'config.php';
@@ -64,12 +63,13 @@ include 'header.php';
 
           <h5 class="title-heading">Inventory</h5>
           <div class="table-content">
-              <table class="table" cellpadding="10">
+              <table class="table" cellpadding="10" width="400">
                   <thead>
                       <tr>
                           <th scope="col" class=" th">Item Id</th>
                           <th scope="col" class=" th">Product Name</th>
                           <th scope="col" class=" th">Quantity</th>
+                          <th scope="col" class=" th">Cost</th>
                           <th scope="col" class=" th">Price</th>
                           <th scope="col" class=" th" colspan="2">Actions</th>
 
@@ -80,7 +80,8 @@ include 'header.php';
                   include 'editItemModal.php';
                   include 'deleteItemModal.php';
                   include 'registerSaleModal.php';
-
+                  include 'returnModal.php';
+                // $current_id;
                   if($sql){
                     while($obj = $sql->fetch_object()) {
                         $id =  $obj->{'item_id'};
@@ -89,6 +90,7 @@ include 'header.php';
                         echo '<td>' . $obj->{'item_id'} . '</td>';
                         echo '<td>' . $obj->{'product_name'} . '</td>';
                         echo '<td>' . $obj->{'quantity'} . '</td>';
+                        echo '<td>₱' . $obj->{'cost'} . '</td>';
                         echo '<td>₱' . $obj->{'price'} . '</td>';
                         echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-primary add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#editItemModal" onClick="getId('.$obj->{'item_id'}.')"><i class="fas fa-edit"></i>
 
@@ -96,6 +98,7 @@ include 'header.php';
                         echo '<td colspan="1">' .'<button id="'.$obj->{'item_id'}.'" class="btn btn-danger add-record" style="display: block; margin: auto; text-align: center;" data-toggle="modal" data-target="#deleteItemModal"  onClick="getId('.$obj->{'item_id'}.')"><i class="fas fa-trash-alt"></i>
 
 </button>'. '</td>';
+
                         echo "</tr>";
                         echo "</tbody>";
                     // display the links to the pages
@@ -146,6 +149,7 @@ include 'header.php';
               echo '<div style="display: block; margin: auto; text-align: center;">';
               echo '<button class="btn btn-primary add-sale" style="margin: 10px;" data-toggle="modal" data-target="#addItemModal">Add</button>';
               echo '<button class="btn btn-primary add-sale" style="margin: 10px;" data-toggle="modal" data-target="#registerSale">Register</button>';
+              echo '<button class="btn btn-primary add-sale" style="margin: 10px;" data-toggle="modal" data-target="#returnSale">Return</button>';
               echo '</div>';
               include 'scripts.php'
                ?>
@@ -157,6 +161,8 @@ include 'header.php';
     <script>
     function getId(id) {
         document.getElementById('item_id_edit').value = id;
+        var current_id = id;
+        // document.getElementById('get_id').value = current_id;
         document.getElementById('item_id_delete').value = id;
     }
     </script>

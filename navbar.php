@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar-wrapper">
   <div class="sidebar-content">
     <div class="sidebar-brand">
-      <a href="#">Sysad</a>
+      <a href="#">Yhes-Shey Variety Store</a>
       <div id="close-sidebar">
         <i class="fas fa-times"></i>
       </div>
@@ -15,7 +15,7 @@
 
           <div class="input-group-append">
             <span class="input-group-text" style="padding: 0;border: none;">
-              <button class="btn" type="submit" name="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+              <button class="btn btn-search" type="submit" name="button" style="background: #3e3e3e; cursor: pointer;"><i class="fa fa-search" aria-hidden="true"></i></button>
             </span>
           </div>
         </div>

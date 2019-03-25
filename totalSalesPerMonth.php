@@ -2,7 +2,7 @@
 
 include 'config.php';
 
-$result = $mysqli->query("SELECT MONTHNAME(dbdate), year(dbdate), SUM(total_amount) FROM sysad.sales GROUP BY YEAR(dbdate), MONTH(dbdate)");
+$result = $mysqli->query("SELECT MONTHNAME(dbdate), year(dbdate), SUM(total_cost), SUM(total_amount), SUM(total_profit) FROM sysad.sales GROUP BY YEAR(dbdate), MONTH(dbdate)");
 // define how many results you want per page
 $results_per_page = 10;
 $number_of_results = mysqli_num_rows($result);
@@ -17,7 +17,7 @@ $this_page_first_result = ($page-1)*$results_per_page;
 
 
 //get sql database
-$sql=$mysqli->query("SELECT MONTHNAME(dbdate), year(dbdate), SUM(total_amount) FROM sysad.sales GROUP BY YEAR(dbdate), MONTH(dbdate) LIMIT $this_page_first_result , $results_per_page");
+$sql=$mysqli->query("SELECT MONTHNAME(dbdate), year(dbdate), SUM(total_cost), SUM(total_amount), SUM(total_profit) FROM sysad.sales GROUP BY YEAR(dbdate), MONTH(dbdate) LIMIT $this_page_first_result , $results_per_page");
 if($sql === FALSE){
   die(mysql_error());
 }
@@ -47,7 +47,9 @@ include 'header.php';
                       <tr>
                           <th scope="col" class=" th">Month</th>
                           <th scope="col" class=" th">Year</th>
-                          <th scope="col" class=" th">Total Amount</th>
+                          <th scope="col" class=" th">Total Cost</th>
+                          <th scope="col" class=" th">Total Sale</th>
+                          <th scope="col" class=" th">Total Income</th>
                       </tr>
                   </thead>
                   <?php
@@ -62,7 +64,9 @@ include 'header.php';
                         echo "<tr>";
                         echo '<td>' . $obj->{'MONTHNAME(dbdate)'} . '</td>';
                         echo '<td>' . $obj->{'year(dbdate)'} . '</td>';
+                        echo '<td>₱' . $obj->{'SUM(total_cost)'} . '</td>';
                         echo '<td>₱' . $obj->{'SUM(total_amount)'} . '</td>';
+                        echo '<td>₱' . $obj->{'SUM(total_profit)'} . '</td>';
                         echo "</tr>";
                         echo "</tbody>";
                     }

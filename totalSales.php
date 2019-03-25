@@ -50,7 +50,9 @@ include 'header.php';
                           <th scope="col" class=" th">Item Id</th>
                           <th scope="col" class=" th">Product Name</th>
                           <th scope="col" class=" th">Quantity Sold</th>
-                          <th scope="col" class=" th">Total Amount</th>
+                          <th scope="col" class=" th">Total Cost</th>
+                          <th scope="col" class=" th">Total Sale</th>
+                           <th scope="col" class=" th">Total Income</th>
                       </tr>
                   </thead>
                   <?php
@@ -67,7 +69,9 @@ include 'header.php';
                         echo '<td>' . $obj->{'item_id'} . '</td>';
                         echo '<td>' . $obj->{'product_name'} . '</td>';
                         echo '<td>' . $obj->{'quantity_sold'} . '</td>';
+                        echo '<td>₱' . $obj->{'total_cost'} . '</td>';
                         echo '<td>₱' . $obj->{'total_amount'} . '</td>';
+                        echo '<td>₱' . $obj->{'total_profit'} . '</td>';
                         echo "</tr>";
                         echo "</tbody>";
                     }

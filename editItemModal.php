@@ -14,15 +14,20 @@
           <form method="post" action="actions.php">
               <div class="form-group">
                 <label for="itemid">Item id</label>
+
                 <input type="number" class="form-control" id="item_id_edit" name="itemid" value="" readonly >
               </div>
               <div class="form-group">
-                <label for="pname">Product name<?php $pname?></label>
-                <input type="text" class="form-control" id="pname_edit" name="pname" required>
+                <label for="pname">Product name</label>
+                <input type="text" class="form-control" id="get_id" name="pname" required>
               </div>
               <div class="form-group">
                 <label for="quantity">Quantity</label>
                 <input type="number" class="form-control" id="quantity_edit" name="quantity" required>
+              </div>
+              <div class="form-group">
+                <label for="cost">Cost</label>
+                <input type="number" class="form-control" id="cost_edit" name="cost"  step="0.01" required>
               </div>
               <div class="form-group">
                 <label for="price">Price</label>
